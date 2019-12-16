@@ -1,0 +1,6 @@
+framework module Pods_InfosysAssignmentTests {
+  umbrella header "Pods-InfosysAssignmentTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
