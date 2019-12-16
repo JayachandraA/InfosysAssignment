@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,7 @@
 		0E4DE7E523A3C02200577ACB /* FactResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DE7E423A3C02200577ACB /* FactResponse.swift */; };
 		0E4DE7E823A3C0AA00577ACB /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DE7E723A3C0AA00577ACB /* NetworkConnection.swift */; };
 		0E4DE7EC23A3E83500577ACB /* FactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DE7EB23A3E83500577ACB /* FactTableViewCell.swift */; };
-		0E4DE7EF23A3E91400577ACB /* FactTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DE7EE23A3E91400577ACB /* FactTableViewCellModel.swift */; };
+		0E4DE7EF23A3E91400577ACB /* ViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DE7EE23A3E91400577ACB /* ViewControllerViewModel.swift */; };
 		0E4DE7F223A3EA8E00577ACB /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4DE7F123A3EA8E00577ACB /* Alerts.swift */; };
 		0E9E248223A7568200278D62 /* local_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E248123A7568200278D62 /* local_data.json */; };
 		1422524A92B76D072A49E026 /* Pods_InfosysAssignmentTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69A4C50C63DEDEFBEB82089F /* Pods_InfosysAssignmentTests.framework */; };
@@ -47,7 +47,7 @@
 		0E4DE7E423A3C02200577ACB /* FactResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactResponse.swift; sourceTree = "<group>"; };
 		0E4DE7E723A3C0AA00577ACB /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		0E4DE7EB23A3E83500577ACB /* FactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactTableViewCell.swift; sourceTree = "<group>"; };
-		0E4DE7EE23A3E91400577ACB /* FactTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactTableViewCellModel.swift; sourceTree = "<group>"; };
+		0E4DE7EE23A3E91400577ACB /* ViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerViewModel.swift; sourceTree = "<group>"; };
 		0E4DE7F123A3EA8E00577ACB /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		0E9E248123A7568200278D62 /* local_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = local_data.json; sourceTree = "<group>"; };
 		2987EF48D42E2BB925A95351 /* Pods-InfosysAssignment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InfosysAssignment.release.xcconfig"; path = "Target Support Files/Pods-InfosysAssignment/Pods-InfosysAssignment.release.xcconfig"; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 		0E4DE7F023A3E98000577ACB /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				0E4DE7EE23A3E91400577ACB /* FactTableViewCellModel.swift */,
+				0E4DE7EE23A3E91400577ACB /* ViewControllerViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -389,7 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E2AE8DE23A3BAE100755A4A /* ViewController.swift in Sources */,
-				0E4DE7EF23A3E91400577ACB /* FactTableViewCellModel.swift in Sources */,
+				0E4DE7EF23A3E91400577ACB /* ViewControllerViewModel.swift in Sources */,
 				0E4DE7F223A3EA8E00577ACB /* Alerts.swift in Sources */,
 				0E4DE7E323A3BD3400577ACB /* APIRestClient.swift in Sources */,
 				0E4DE7E823A3C0AA00577ACB /* NetworkConnection.swift in Sources */,

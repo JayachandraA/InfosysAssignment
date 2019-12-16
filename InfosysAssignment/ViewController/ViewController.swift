@@ -10,73 +10,149 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    // View model object for facts list view
-    var factsTableViewModel: FactTableViewModel!
+    /// Facts list view object
+    var factsTableView: UITableView!
+
+    /// Facts list/tableview's cell reusable identifier
+    let cellId = "FactTableViewCell"
+
+    /// Data refresher UI object
+    var dataRefresher: UIRefreshControl!
+
+    // Create data model object
+    let viewControllerViewModel = ViewControllerViewModel()
 
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Create data model object for facts tableview
-        let lFactsTableViewModel = FactTableViewModel(sourceView: view)
-        view.addSubview(lFactsTableViewModel.factsTableView)
-        factsTableViewModel = lFactsTableViewModel
 
-        /// Registrer refresh action
-        factsTableViewModel.onRefresh = {
-            self.getFactsData()
-        }
+        // Initial setup
+        setup()
 
         // Get initial facts data
-        getFactsData()
+        viewControllerViewModel.getFactsData()
+        viewControllerViewModel.onDataHandler = { (result) in
+            if let lResult = result {
+                switch lResult {
+                case .success(let value):
+                    if let lFactResponse = value as? FactResponse {
+                        DispatchQueue.main.async {
+                            self.title = lFactResponse.title
+                            self.reloadData()
+                        }
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
 }
 
 extension ViewController {
-    func getFactsData() {
-        // Check for internet connectivity
-        if NetworkConnection.isConnectedToNetwork() {
-            let urlPath = "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts.json"
-            sendGetRequest(url: urlPath,
-                           mapTo: FactResponse.self) { [weak self](result) in
-                            switch result {
-                            case .error(let error):
-                                // If there is any error then tell the user
-                                DispatchQueue.main.async {
-                                    self?.factsTableViewModel.dataRefresher.endRefreshing()
-                                    self?.showAlert(title: NSLocalizedString("Error", comment: ""),
-                                                   message: NSLocalizedString(error.localizedDescription, comment: ""),
-                                                   from: self!)
-                                }
-                            case .success(let value):
-                                // Remove already existed object if it is the first page.
-                                // This logic will be changed if the are multiple pages
-                                DispatchQueue.main.async {
-                                    self?.factsTableViewModel.facts.removeAll()
-                                    if let lValue = value as? FactResponse {
-                                        self?.factsTableViewModel.facts.append(contentsOf: lValue.rows)
-                                        self?.title = lValue.title
-                                    }
-                                    self?.factsTableViewModel.dataRefresher.endRefreshing()
-                                    self?.factsTableViewModel.reloadData()
-                                }
-                            }
-            }
-        } else {
-            // Show no internet connection error
-            DispatchQueue.main.async {
-                self.showAlert(title: NSLocalizedString("Network Error", comment: ""),
-                               message: NSLocalizedString("The internet connection appears to be offline.",
-                                                          comment: ""),
-                               from: self)
-            }
+    ///
+    /// Call this function to setup the initial layout on the top most `view` object
+    ///
+    func setup() {
+        if factsTableView == nil {
+            // Create facts table/list view object
+            factsTableView = UITableView(frame: view.bounds, style: .plain)
+            factsTableView.delegate = self
+            factsTableView.dataSource = self
+            factsTableView.rowHeight = UITableView.automaticDimension
+            factsTableView.estimatedRowHeight = UITableView.automaticDimension
+            factsTableView.isHidden = true
+            view.addSubview(factsTableView)
+
+            // Constraints for factsTableView object
+            factsTableView.translatesAutoresizingMaskIntoConstraints = false
+            factsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                     constant: 0).isActive = true
+            factsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                      constant: 0).isActive = true
+            factsTableView.topAnchor.constraint(equalTo: view.topAnchor,
+                                                constant: 0).isActive = true
+            factsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                   constant: 0).isActive = true
         }
+
+        if dataRefresher == nil {
+            // Crete refresh control to refresh the facts data
+            dataRefresher = UIRefreshControl()
+            dataRefresher.addTarget(self, action: #selector(refreshFactsData), for: .valueChanged)
+            factsTableView.addSubview(dataRefresher)
+        }
+    }
+
+    ///
+    /// Call this function to reload the facts list data
+    ///
+    func reloadData() {
+        self.factsTableView?.reloadData()
+        self.factsTableView?.layoutIfNeeded()
+        // For smooth content reload
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
+            self.factsTableView?.reloadData()
+            self.factsTableView.isHidden = false
+        }
+    }
+
+    ///
+    /// Will trigers the refresh facts completion block
+    ///
+    @objc func refreshFactsData() {
+        viewControllerViewModel.getFactsData()
+    }
+
+    ///
+    /// Configures the `FactTableViewCell` cell object
+    /// - Parameter cell: Pass the `FactTableViewCell`cell object to configure and show the data
+    /// - Parameter indexPath: Current cell indexpath
+    ///
+    func configureCell(cell: FactTableViewCell, at indexPath: IndexPath) {
+        cell.setData(fact: viewControllerViewModel.facts[indexPath.row], at: indexPath)
     }
 }
 
-extension ViewController: APIRestClient {}
+// MARK: - UITableViewDataSource
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return viewControllerViewModel.facts.count
+    }
 
-extension ViewController: Alerts {}
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Check for reusable cell object, if not exists create tableview cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as? FactTableViewCell else {
+            let cell = FactTableViewCell(style: .default, reuseIdentifier: cellId)
+            return cell
+        }
+        // Return reusing cell object
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? FactTableViewCell else { return }
+        // Configure or set cell data
+        configureCell(cell: cell, at: indexPath)
+    }
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView,
+                   estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
