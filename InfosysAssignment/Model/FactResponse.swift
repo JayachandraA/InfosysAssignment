@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// `FactResponse` will be used to map the facts api response
 struct FactResponse: Codable {
     let title: String
     let rows: [Fact]

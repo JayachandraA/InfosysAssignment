@@ -47,8 +47,12 @@ extension FactTableViewModel {
             factsTableView = UITableView(frame: view.bounds, style: .plain)
             factsTableView.delegate = self
             factsTableView.dataSource = self
+            factsTableView.rowHeight = UITableView.automaticDimension
+            factsTableView.estimatedRowHeight = UITableView.automaticDimension
+            factsTableView.isHidden = true
             view.addSubview(factsTableView)
 
+            // Constraints for factsTableView object
             factsTableView.translatesAutoresizingMaskIntoConstraints = false
             factsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                      constant: 0).isActive = true
@@ -72,8 +76,12 @@ extension FactTableViewModel {
     /// Call this function to reload the facts list data
     ///
     func reloadData() {
-        DispatchQueue.main.async {
+        self.factsTableView?.reloadData()
+        self.factsTableView?.layoutIfNeeded()
+        // For smooth content reload
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
             self.factsTableView?.reloadData()
+            self.factsTableView.isHidden = false
         }
     }
 
@@ -93,28 +101,27 @@ extension FactTableViewModel {
     ///
     func configureCell(cell: FactTableViewCell, at indexPath: IndexPath) {
         cell.setData(fact: facts[indexPath.row], at: indexPath)
+        cell.layoutSubviews()
+        cell.layoutIfNeeded()
+        cell.setNeedsUpdateConstraints()
+        cell.updateConstraintsIfNeeded()
     }
 }
 
 // MARK: - UITableViewDataSource
 extension FactTableViewModel: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         return facts.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Check for reusable cell object, if not exists create tableview cell
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId) as? FactTableViewCell else {
             let cell = FactTableViewCell(style: .default, reuseIdentifier: cellId)
-
-            // Configure or set cell data
-            configureCell(cell: cell, at: indexPath)
             return cell
         }
-
-        // Configure or set cell data
-        configureCell(cell: cell, at: indexPath)
-
         // Return reusing cell object
         return cell
     }
@@ -122,7 +129,20 @@ extension FactTableViewModel: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension FactTableViewModel: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? FactTableViewCell else { return }
+        // Configure or set cell data
+        configureCell(cell: cell, at: indexPath)
+    }
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+    func tableView(_ tableView: UITableView,
+                   estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 }

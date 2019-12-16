@@ -8,15 +8,24 @@
 
 import Foundation
 
+/// API services response will be mapped to this enum result
 enum APIRestClientResult {
     case error(Error)
     case success(Any)
 }
 
+/// This is protocol to extend all api services
 protocol APIRestClient {
 }
 
 extension APIRestClient {
+    ///
+    /// Call this function to send a get request without any body data
+    ///
+    /// - Parameter url: API url path to be requested
+    /// - Parameter mapTo: The model object to be mapped to json
+    /// - Parameter completionHandler: Request completion block
+    ///
     func sendGetRequest<T>(url: String,
                            mapTo: T.Type,
                            completionHandler:@escaping (APIRestClientResult) -> Void) where T: Codable {

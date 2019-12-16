@@ -9,6 +9,7 @@
 import Foundation
 import SystemConfiguration
 
+/// Net work checking helper object
 struct NetworkConnection {
     static func isConnectedToNetwork() -> Bool {
         var zeroAddress = sockaddr_in()

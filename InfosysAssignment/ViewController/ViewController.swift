@@ -13,11 +13,16 @@ class ViewController: UIViewController {
     // View model object for facts list view
     var factsTableViewModel: FactTableViewModel!
 
+    override func loadView() {
+        super.loadView()
+        view.backgroundColor = .white
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Create data model object for facts tableview
         let lFactsTableViewModel = FactTableViewModel(sourceView: view)
-        self.view.addSubview(lFactsTableViewModel.factsTableView)
+        view.addSubview(lFactsTableViewModel.factsTableView)
         factsTableViewModel = lFactsTableViewModel
 
         /// Registrer refresh action

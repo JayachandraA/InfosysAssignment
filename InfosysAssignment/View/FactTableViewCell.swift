@@ -49,10 +49,11 @@ class FactTableViewCell: UITableViewCell {
     /// Allocates or creates all the UI elements required to show fact row
     ///
     func initializeUI() {
+        self.accessoryType = .none
+
         if titleLabel == nil {
             titleLabel = UILabel()
             titleLabel.numberOfLines = 0
-            titleLabel.sizeToFit()
             titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
             contentView.addSubview(titleLabel)
         }
@@ -61,15 +62,13 @@ class FactTableViewCell: UITableViewCell {
             descriptionLabel = UILabel()
             descriptionLabel.font = UIFont.systemFont(ofSize: 15)
             descriptionLabel.numberOfLines = 0
-            descriptionLabel.sizeToFit()
             contentView.addSubview(descriptionLabel)
         }
         if factImageView == nil {
-            factImageView = UIImageView(frame: .zero)
+            factImageView = UIImageView()
             contentView.addSubview(factImageView)
         }
 
-        // Add programatical constraints for all subviews
         addConstraints()
     }
 
@@ -77,37 +76,35 @@ class FactTableViewCell: UITableViewCell {
     /// Adds the necessory constraints to the all subview
     ///
     func addConstraints() {
-        DispatchQueue.main.async {
-            // Title lable constraints
-            self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
-            self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,
-                                                     constant: 10).isActive = true
-            self.titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,
-                                                      constant: -10).isActive = true
-            self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor,
+        // Title lable constraints
+        self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,
                                                  constant: 10).isActive = true
+        self.titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,
+                                                  constant: -10).isActive = true
+        self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor,
+                                             constant: 10).isActive = true
 
-            // Description lable constraints
-            self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-            self.descriptionLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,
-                                                     constant: 10).isActive = true
-            self.descriptionLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,
-                                                      constant: -10).isActive = true
-            self.descriptionLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor,
-                                                 constant: 10).isActive = true
+        // Description lable constraints
+        self.descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.descriptionLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,
+                                                       constant: 10).isActive = true
+        self.descriptionLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,
+                                                        constant: -10).isActive = true
+        self.descriptionLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor,
+                                                   constant: 10).isActive = true
 
-            // Fact Imageview constraints
-            self.factImageView.translatesAutoresizingMaskIntoConstraints = false
-            self.factImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,
-                                                     constant: 10).isActive = true
-            self.factImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,
-                                                      constant: -10).isActive = true
-            self.factImageView.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor,
-                                                 constant: 10).isActive = true
-            self.factImageView.heightAnchor.constraint(equalToConstant:
-                self.contentView.bounds.width * 0.8).isActive = true
-            self.factImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,
-                                                       constant: -10).isActive = true
-        }
+        // Fact Imageview constraints
+        self.factImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.factImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,
+                                                    constant: 10).isActive = true
+        self.factImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,
+                                                     constant: -10).isActive = true
+        self.factImageView.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor,
+                                                constant: 10).isActive = true
+        self.factImageView.heightAnchor.constraint(equalToConstant:
+            self.contentView.bounds.width * 0.8).isActive = true
+        self.factImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,
+                                                   constant: -10).isActive = true
     }
 }
