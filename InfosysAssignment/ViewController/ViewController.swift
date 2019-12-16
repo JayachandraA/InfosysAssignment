@@ -42,6 +42,7 @@ class ViewController: UIViewController {
                     if let lFactResponse = value as? FactResponse {
                         DispatchQueue.main.async {
                             self.title = lFactResponse.title
+                            self.dataRefresher.endRefreshing()
                             self.reloadData()
                         }
                     }
