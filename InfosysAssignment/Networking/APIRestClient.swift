@@ -29,8 +29,6 @@ extension APIRestClient {
     func sendGetRequest<T>(url: String,
                            mapTo: T.Type,
                            completionHandler:@escaping (APIRestClientResult) -> Void) where T: Codable {
-        // To get form local file
-        //guard let requestUrl = Bundle.main.url(forResource: "local_data", withExtension: "json") else { return }
          guard let requestUrl = URL(string: url) else {
              fatalError("\(#function),\(url) url is not valid.")
          }
