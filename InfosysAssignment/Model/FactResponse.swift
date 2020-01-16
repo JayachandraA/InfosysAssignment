@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// `FactResponse` will be used to map the facts api response
 struct FactResponse: Codable {

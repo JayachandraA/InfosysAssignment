@@ -36,6 +36,13 @@ class FactTableViewCell: UITableViewCell {
         self.initializeUI()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        descriptionLabel.text = nil
+        factImageView.image = #imageLiteral(resourceName: "gallery-placeholder")
+    }
+
     ///
     /// Call this function to set the fact row data
     ///

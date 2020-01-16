@@ -6,7 +6,6 @@ target 'InfosysAssignment' do
   use_frameworks!
   pod 'SwiftLint', '~> 0.38.0'
   pod 'SDWebImage'
-
   # Pods for InfosysAssignment
 
   target 'InfosysAssignmentTests' do
