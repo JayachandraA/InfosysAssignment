@@ -23,7 +23,7 @@ class ViewControllerTests: XCTestCase {
 
     func testSetup() {
         viewController.setup()
-        XCTAssert(viewController.view != nil, "")
+        XCTAssert(viewController.view != nil, "ViewController's view is not loaded")
     }
 
 }
