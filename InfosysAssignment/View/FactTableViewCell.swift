@@ -24,6 +24,18 @@ class FactTableViewCell: UITableViewCell {
     /// Table Row indexpath, will be use to perform any additional actions from the cell
     var indexPath: IndexPath!
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        // Create all UI element
+        self.initializeUI()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        // Create all UI element
+        self.initializeUI()
+    }
+
     ///
     /// Call this function to set the fact row data
     ///
@@ -32,12 +44,18 @@ class FactTableViewCell: UITableViewCell {
     ///
     func setData(fact: Fact, at indexPath: IndexPath) {
         self.indexPath = indexPath
-        // Create all UI element
-        self.initializeUI()
 
         // Update the ui with data
-        self.titleLabel.text = fact.title
-        self.descriptionLabel.text = fact.description
+        if let title = fact.title, !title.isEmpty {
+            self.titleLabel.text = title
+        } else {
+            self.titleLabel.text = "No title available"
+        }
+        if let desc = fact.description, !desc.isEmpty {
+            self.descriptionLabel.text = desc
+        } else {
+            self.descriptionLabel.text =  "No description available"
+        }
         if let imageURLPath = fact.imageHref, let urlRef = URL(string: imageURLPath) {
             self.factImageView.sd_setImage(with: urlRef,
                                            placeholderImage: #imageLiteral(resourceName: "gallery-placeholder"),
@@ -66,6 +84,7 @@ class FactTableViewCell: UITableViewCell {
         }
         if factImageView == nil {
             factImageView = UIImageView()
+            factImageView.contentMode = .scaleAspectFit
             contentView.addSubview(factImageView)
         }
 
@@ -102,8 +121,7 @@ class FactTableViewCell: UITableViewCell {
                                                      constant: -10).isActive = true
         self.factImageView.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor,
                                                 constant: 10).isActive = true
-        self.factImageView.heightAnchor.constraint(equalToConstant:
-            self.contentView.bounds.width * 0.8).isActive = true
+        self.factImageView.heightAnchor.constraint(equalToConstant: 250).isActive = true
         self.factImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,
                                                    constant: -10).isActive = true
     }

@@ -67,18 +67,16 @@ extension ViewController {
             factsTableView.rowHeight = UITableView.automaticDimension
             factsTableView.estimatedRowHeight = UITableView.automaticDimension
             factsTableView.isHidden = true
+            factsTableView.estimatedRowHeight = 100
+            factsTableView.rowHeight = UITableView.automaticDimension
             view.addSubview(factsTableView)
 
             // Constraints for factsTableView object
             factsTableView.translatesAutoresizingMaskIntoConstraints = false
-            factsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                     constant: 0).isActive = true
-            factsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                      constant: 0).isActive = true
-            factsTableView.topAnchor.constraint(equalTo: view.topAnchor,
-                                                constant: 0).isActive = true
-            factsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                                   constant: 0).isActive = true
+            factsTableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            factsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            factsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            factsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         }
 
         if dataRefresher == nil {
@@ -133,6 +131,9 @@ extension ViewController: UITableViewDataSource {
             let cell = FactTableViewCell(style: .default, reuseIdentifier: cellId)
             return cell
         }
+        // Configure or set cell data
+        configureCell(cell: cell, at: indexPath)
+
         // Return reusing cell object
         return cell
     }
@@ -140,13 +141,6 @@ extension ViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension ViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView,
-                   willDisplay cell: UITableViewCell,
-                   forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? FactTableViewCell else { return }
-        // Configure or set cell data
-        configureCell(cell: cell, at: indexPath)
-    }
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
